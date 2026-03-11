@@ -1,0 +1,25 @@
+{
+	"name": "obsidian-latex-refs",
+	"version": "0.1.0",
+	"description": "LaTeX-style reference management for Obsidian",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+	},
+	"keywords": [],
+	"author": "Loren",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^22.0.0",
+		"esbuild": "0.25.0",
+		"obsidian": "latest",
+		"tslib": "2.8.1",
+		"typescript": "5.7.3"
+	},
+	"dependencies": {
+		"@citation-js/core": "^0.7.0",
+		"@citation-js/plugin-bibtex": "^0.7.0",
+		"@citation-js/plugin-csl": "^0.7.0"
+	}
+}

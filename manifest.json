@@ -1,0 +1,9 @@
+{
+	"id": "obsidian-latex-refs",
+	"name": "LaTeX Refs",
+	"version": "0.1.0",
+	"minAppVersion": "0.15.0",
+	"description": "LaTeX-style reference management with BibTeX support and formatted bibliography output.",
+	"author": "Loren",
+	"isDesktopOnly": false
+}

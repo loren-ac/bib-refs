@@ -1,0 +1,73 @@
+/* Inline citation numbers */
+.latex-refs-cite {
+	color: var(--text-accent);
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.latex-refs-cite:hover {
+	text-decoration: underline;
+}
+
+/* Hover tooltip */
+.latex-refs-tooltip {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	max-width: 450px;
+	padding: 8px 12px;
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	font-size: 0.85em;
+	line-height: 1.5;
+}
+
+.latex-refs-tooltip .csl-entry {
+	margin: 0;
+}
+
+/* Bibliography entry highlight on scroll-to */
+.latex-refs-bib-highlight {
+	background: var(--text-highlight-bg);
+	border-radius: 4px;
+	transition: background 0.3s ease;
+}
+
+/* Bibliography output styling */
+.latex-refs-bibliography {
+	font-size: 0.95em;
+	line-height: 1.6;
+}
+
+.latex-refs-bib-entry {
+	display: flex;
+	gap: 0.5em;
+	margin-bottom: 0.6em;
+}
+
+.latex-refs-bib-number {
+	font-weight: 600;
+	flex-shrink: 0;
+}
+
+.latex-refs-bib-content .csl-entry {
+	display: inline;
+}
+
+/* Autocomplete suggestion styling */
+.latex-refs-suggestion {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.latex-refs-suggestion-key {
+	font-weight: 600;
+}
+
+.latex-refs-suggestion-detail {
+	font-size: 0.85em;
+	color: var(--text-muted);
+}

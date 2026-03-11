@@ -1,0 +1,18 @@
+# build output
+main.js
+
+# Obsidian plugin settings
+data.json
+
+# npm
+node_modules
+
+# env
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
