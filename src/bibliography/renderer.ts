@@ -28,7 +28,7 @@ export async function renderBibliography(
 	const citationKeys = scanCitations(content);
 
 	if (citationKeys.length === 0) {
-		el.createEl("p", { text: "No citations found in this note.", cls: "latex-refs-bibliography" });
+		el.createEl("p", { text: "No citations found in this note.", cls: "bib-refs-bibliography" });
 		return;
 	}
 
@@ -36,7 +36,7 @@ export async function renderBibliography(
 	const styleOverride = source.trim();
 	const style = styleOverride || plugin.settings.citationStyle;
 
-	const container = el.createDiv({ cls: "latex-refs-bibliography" });
+	const container = el.createDiv({ cls: "bib-refs-bibliography" });
 
 	try {
 		let hasAny = false;
@@ -52,10 +52,10 @@ export async function renderBibliography(
 				lang: "en-US",
 			}) as string;
 
-			const row = container.createDiv({ cls: "latex-refs-bib-entry" });
-			row.id = `latex-refs-bib-${citationKeys[i]}`;
-			const numSpan = row.createSpan({ cls: "latex-refs-bib-number", text: `[${i + 1}]` });
-			const contentSpan = row.createSpan({ cls: "latex-refs-bib-content" });
+			const row = container.createDiv({ cls: "bib-refs-bib-entry" });
+			row.id = `bib-refs-bib-${citationKeys[i]}`;
+			const numSpan = row.createSpan({ cls: "bib-refs-bib-number", text: `[${i + 1}]` });
+			const contentSpan = row.createSpan({ cls: "bib-refs-bib-content" });
 			contentSpan.innerHTML = html;
 		}
 

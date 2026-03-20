@@ -1,11 +1,12 @@
 {
-	"name": "obsidian-latex-refs",
+	"name": "bib-refs",
 	"version": "0.1.0",
-	"description": "LaTeX-style reference management for Obsidian",
+	"description": "BibTeX-powered reference management for Obsidian",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"version": "node version-bump.mjs && npm run build"
 	},
 	"keywords": [],
 	"author": "Loren",

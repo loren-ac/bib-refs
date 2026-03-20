@@ -1,6 +1,6 @@
-# obsidian-latex-refs
+# bib-refs
 
-Obsidian plugin for LaTeX-style reference management.
+Obsidian plugin for BibTeX-powered reference management.
 
 ## Build
 
@@ -17,7 +17,9 @@ npm run build  # typecheck + production build
 - `src/bib/types.ts` — BibEntry interface
 - `src/citation/suggest.ts` — EditorSuggest for `[@key]` autocomplete
 - `src/citation/scanner.ts` — Regex scanner to find all `[@key]` references in a note
+- `src/citation/inline-renderer.ts` — Post-processor: replaces `[@key]` with clickable `[n]` in reading view
 - `src/bibliography/renderer.ts` — Code block processor for ```bibliography blocks
+- `src/sync-fetch-shim.js` — No-op shim replacing sync-fetch (incompatible with Obsidian)
 - `src/types.d.ts` — Type declarations for Citation.js (no shipped types)
 
 ## Key design decisions
@@ -26,11 +28,13 @@ npm run build  # typecheck + production build
 - Uses Citation.js (`@citation-js/core` + plugins) for both BibTeX parsing and CSL-formatted output
 - Bibliography rendered via `registerMarkdownCodeBlockProcessor("bibliography", ...)`
 - Autocomplete via Obsidian's `EditorSuggest` API, triggered by `[@`
+- Inline citations are numbered `[1]`, `[2]` in order of appearance, clickable with hover tooltips
+- sync-fetch shimmed out in esbuild.config.mjs (Citation.js dependency that uses XMLHttpRequest)
+- `layout-change` event listener forces bibliography re-render on view switch
 
-## Testing
+## Releasing
 
-Symlink into an Obsidian test vault:
 ```bash
-ln -s /Users/loren/obsidian-plugins/obsidian-latex-refs ~/YOUR-VAULT/.obsidian/plugins/obsidian-latex-refs
+npm version patch  # bumps version in package.json, triggers version-bump.mjs
+git push && git push --tags  # GitHub Actions builds and creates release
 ```
-Then enable the plugin in Obsidian settings, place a .bib file in the vault, and configure the path in plugin settings.

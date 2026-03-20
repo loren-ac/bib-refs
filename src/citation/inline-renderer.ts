@@ -12,7 +12,7 @@ let tooltip: HTMLElement | null = null;
 function getTooltip(): HTMLElement {
 	if (!tooltip) {
 		tooltip = document.createElement("div");
-		tooltip.className = "latex-refs-tooltip";
+		tooltip.className = "bib-refs-tooltip";
 		document.body.appendChild(tooltip);
 	}
 	return tooltip;
@@ -63,22 +63,22 @@ export function registerInlineCitationProcessor(plugin: LatexRefsPlugin): void {
 
 				// Create clickable citation link
 				const link = document.createElement("a");
-				link.className = "latex-refs-cite";
+				link.className = "bib-refs-cite";
 				link.textContent = `[${num}]`;
 				link.setAttribute("data-citation-key", key);
-				link.href = `#latex-refs-bib-${key}`;
+				link.href = `#bib-refs-bib-${key}`;
 
 				// Click: scroll to bibliography entry
 				link.addEventListener("click", (e) => {
 					e.preventDefault();
-					const targetId = `latex-refs-bib-${key}`;
+					const targetId = `bib-refs-bib-${key}`;
 
 					const scrollToTarget = () => {
 						const target = document.getElementById(targetId);
 						if (target) {
 							target.scrollIntoView({ behavior: "smooth", block: "center" });
-							target.classList.add("latex-refs-bib-highlight");
-							setTimeout(() => target.classList.remove("latex-refs-bib-highlight"), 1500);
+							target.classList.add("bib-refs-bib-highlight");
+							setTimeout(() => target.classList.remove("bib-refs-bib-highlight"), 1500);
 							return true;
 						}
 						return false;

@@ -47,7 +47,7 @@ export default class LatexRefsPlugin extends Plugin {
 				if (!view || view.getMode() !== "preview") return;
 
 				const previewEl = view.previewMode.containerEl;
-				const bibContainers = previewEl.querySelectorAll(".latex-refs-bibliography");
+				const bibContainers = previewEl.querySelectorAll(".bib-refs-bibliography");
 				if (bibContainers.length === 0) return;
 
 				const file = view.file;

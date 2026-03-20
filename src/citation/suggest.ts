@@ -48,11 +48,11 @@ export class CitationSuggest extends EditorSuggest<BibEntry> {
 	}
 
 	renderSuggestion(entry: BibEntry, el: HTMLElement): void {
-		const container = el.createDiv({ cls: "latex-refs-suggestion" });
-		container.createDiv({ cls: "latex-refs-suggestion-key", text: entry.key });
+		const container = el.createDiv({ cls: "bib-refs-suggestion" });
+		container.createDiv({ cls: "bib-refs-suggestion-key", text: entry.key });
 		const detail = [entry.author, entry.year, entry.title].filter(Boolean).join(" — ");
 		if (detail) {
-			container.createDiv({ cls: "latex-refs-suggestion-detail", text: detail });
+			container.createDiv({ cls: "bib-refs-suggestion-detail", text: detail });
 		}
 	}
 
