@@ -1,4 +1,4 @@
-import { TFile } from "obsidian";
+import { TFile, sanitizeHTMLToDom } from "obsidian";
 import type LatexRefsPlugin from "../main";
 import { scanCitations } from "./scanner";
 
@@ -110,7 +110,8 @@ export function registerInlineCitationProcessor(plugin: LatexRefsPlugin): void {
 							template: plugin.settings.citationStyle,
 							lang: "en-US",
 						}) as string;
-						tip.innerHTML = html;
+						tip.empty();
+					tip.appendChild(sanitizeHTMLToDom(html));
 					} catch {
 						tip.textContent = `${entry.author} (${entry.year}). ${entry.title}`;
 					}

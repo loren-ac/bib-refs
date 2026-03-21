@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext, TFile } from "obsidian";
+import { MarkdownPostProcessorContext, TFile, sanitizeHTMLToDom } from "obsidian";
 import type LatexRefsPlugin from "../main";
 import { scanCitations } from "../citation/scanner";
 
@@ -56,7 +56,7 @@ export async function renderBibliography(
 			row.id = `bib-refs-bib-${citationKeys[i]}`;
 			const numSpan = row.createSpan({ cls: "bib-refs-bib-number", text: `[${i + 1}]` });
 			const contentSpan = row.createSpan({ cls: "bib-refs-bib-content" });
-			contentSpan.innerHTML = html;
+			contentSpan.appendChild(sanitizeHTMLToDom(html));
 		}
 
 		if (!hasAny) {
