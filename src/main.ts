@@ -43,31 +43,7 @@ export default class LatexRefsPlugin extends Plugin {
 		// Re-render bibliography when switching to reading view
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
-				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (!view || view.getMode() !== "preview") return;
-
-				const previewEl = view.previewMode.containerEl;
-				const bibContainers = previewEl.querySelectorAll(".bib-refs-bibliography");
-				if (bibContainers.length === 0) return;
-
-				const file = view.file;
-				if (!file) return;
-
-				// Clear and re-render each bibliography block
-				bibContainers.forEach((container) => {
-					const parent = container.parentElement;
-					if (!parent) return;
-					parent.empty();
-					renderBibliography(this, "", parent, {
-						sourcePath: file.path,
-						getSectionInfo: () => null,
-						addChild: () => {},
-						docId: "",
-						el: parent,
-						frontmatter: null,
-						remainingNestLevel: 0,
-					} as any);
-				});
+				this.rerenderBibliographies();
 			})
 		);
 
@@ -88,10 +64,42 @@ export default class LatexRefsPlugin extends Plugin {
 		try {
 			const entries = await this.bibParser.loadFromVault(this.app.vault, this.settings.bibFilePath);
 			new Notice(`LaTeX Refs: Loaded ${entries.length} entries from ${this.settings.bibFilePath}`);
+			this.rerenderBibliographies();
 		} catch (err) {
 			new Notice(`LaTeX Refs: Error loading BibTeX file — ${err}`);
 			console.error("LaTeX Refs: BibTeX load error", err);
 		}
+	}
+
+	rerenderBibliographies(): void {
+		this.app.workspace.iterateAllLeaves((leaf) => {
+			const view = leaf.view;
+			if (!(view instanceof MarkdownView)) return;
+
+			const previewEl = view.previewMode?.containerEl;
+			if (!previewEl) return;
+
+			const bibContainers = previewEl.querySelectorAll(".bib-refs-bibliography");
+			if (bibContainers.length === 0) return;
+
+			const file = view.file;
+			if (!file) return;
+
+			bibContainers.forEach((container) => {
+				const parent = container.parentElement;
+				if (!parent) return;
+				parent.empty();
+				renderBibliography(this, "", parent, {
+					sourcePath: file.path,
+					getSectionInfo: () => null,
+					addChild: () => {},
+					docId: "",
+					el: parent,
+					frontmatter: null,
+					remainingNestLevel: 0,
+				} as any);
+			});
+		});
 	}
 
 	async loadSettings() {

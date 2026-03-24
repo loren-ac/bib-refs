@@ -71,30 +71,42 @@ export function registerInlineCitationProcessor(plugin: LatexRefsPlugin): void {
 				// Click: scroll to bibliography entry
 				link.addEventListener("click", (e) => {
 					e.preventDefault();
+					hideTooltip();
 					const targetId = `bib-refs-bib-${key}`;
+					const previewEl = link.closest(".markdown-preview-view") as HTMLElement | null;
+					if (!previewEl) return;
 
-					const scrollToTarget = () => {
-						const target = document.getElementById(targetId);
-						if (target) {
-							target.scrollIntoView({ behavior: "smooth", block: "center" });
-							target.classList.add("bib-refs-bib-highlight");
-							setTimeout(() => target.classList.remove("bib-refs-bib-highlight"), 1500);
-							return true;
-						}
-						return false;
+					// Search only within the current preview container to avoid stale duplicates
+					const findTarget = () =>
+						previewEl.querySelector(`#${CSS.escape(targetId)}`) as HTMLElement | null;
+
+					const scrollToTarget = (t: HTMLElement) => {
+						t.scrollIntoView({ behavior: "smooth", block: "center" });
+						t.classList.add("bib-refs-bib-highlight");
+						setTimeout(() => t.classList.remove("bib-refs-bib-highlight"), 1500);
 					};
 
-					// Try direct scroll first (works when bibliography is already rendered)
-					if (scrollToTarget()) return;
+					// Try direct scroll first (works when bibliography is already in the DOM)
+					const target = findTarget();
+					if (target) {
+						scrollToTarget(target);
+						return;
+					}
 
-					// Bibliography not in DOM — jump to bottom instantly to force Obsidian to render it
-					const container = link.closest(".markdown-preview-view");
-					if (!container) return;
-					container.scrollTo({ top: container.scrollHeight, behavior: "auto" });
-					// Now the bibliography is rendered — smooth scroll to the exact entry
-					requestAnimationFrame(() => {
-						scrollToTarget();
-					});
+					// Bibliography not in DOM — scroll to bottom repeatedly to force
+					// Obsidian's virtualized renderer to materialize it
+					let attempts = 0;
+					const scrollAndRetry = () => {
+						const t = findTarget();
+						if (t) {
+							scrollToTarget(t);
+							return;
+						}
+						if (attempts++ >= 20) return;
+						previewEl.scrollTop = previewEl.scrollHeight;
+						setTimeout(scrollAndRetry, 50);
+					};
+					scrollAndRetry();
 				});
 
 				// Hover: show tooltip with formatted reference

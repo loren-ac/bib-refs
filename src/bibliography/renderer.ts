@@ -24,6 +24,22 @@ export async function renderBibliography(
 		return;
 	}
 
+	// Wait for bib database to load if it hasn't yet
+	if (plugin.bibParser.allEntries.length === 0) {
+		await new Promise<void>((resolve) => {
+			let attempts = 0;
+			const check = () => {
+				if (plugin.bibParser.allEntries.length > 0 || attempts++ >= 50) {
+					resolve();
+				} else {
+					setTimeout(check, 100);
+				}
+			};
+			check();
+		});
+		if (plugin.bibParser.allEntries.length === 0) return;
+	}
+
 	const content = await plugin.app.vault.read(file);
 	const citationKeys = scanCitations(content);
 
